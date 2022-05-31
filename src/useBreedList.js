@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useDebugValue } from "react";
 
 const localCache = {};
 
 export default function useBreedList(animal) {
   const [breedList, setBreedList] = useState([]);
   const [status, setStatus] = useState("unloaded");
+
+  useDebugValue("this spits our to the devtools");
 
   useEffect(() => {
     if (!animal) {
