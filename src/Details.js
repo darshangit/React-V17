@@ -1,18 +1,16 @@
 import { Component } from "react";
 import { useParams } from "react-router-dom";
+import Carousal from "./Carousal";
 
 class Details extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { loading: true };
-  }
+  state = { loading: true }; // this is because of @babel/plugin-proposal-class-properties
 
   async componentDidMount() {
     const res = await fetch(
       `http://pets-v2.dev-apis.com/pets?id=${this.props.params.id}`
     );
     const json = await res.json();
+
     this.setState({ loading: false, ...json.pets[0] });
   }
 
@@ -21,10 +19,12 @@ class Details extends Component {
       return <h2>Loading ...</h2>;
     }
 
-    const { animal, breed, city, state, description, name } = this.state;
+    const { animal, breed, city, state, description, name, images } =
+      this.state;
 
     return (
       <div className="details">
+        <Carousal images={images} />
         <div>
           <h1>{name}</h1>
           <h2>
