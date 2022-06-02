@@ -20,7 +20,6 @@ class Details extends Component {
       return <h2>Loading ...</h2>;
     }
 
-    throw new Error("helloi");
     const { animal, breed, city, state, description, name, images } =
       this.state;
 
