@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { useParams } from "react-router-dom";
 import Carousal from "./Carousal";
+import ErrorBoundary from "./ErrorBoundary";
 
 class Details extends Component {
   state = { loading: true }; // this is because of @babel/plugin-proposal-class-properties
@@ -19,6 +20,7 @@ class Details extends Component {
       return <h2>Loading ...</h2>;
     }
 
+    throw new Error("helloi");
     const { animal, breed, city, state, description, name, images } =
       this.state;
 
@@ -40,7 +42,11 @@ class Details extends Component {
 
 const WrappedDetails = () => {
   const params = useParams();
-  return <Details params={params} />;
+  return (
+    <ErrorBoundary>
+      <Details params={params} />
+    </ErrorBoundary>
+  );
 };
 
 export default WrappedDetails;
