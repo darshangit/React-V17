@@ -2,7 +2,11 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { Component } from "react";
 
-class Carousal extends Component {
+interface IProps {
+  images: string[];
+}
+
+class Carousal extends Component<IProps> {
   state = {
     active: 0,
   };
@@ -11,9 +15,12 @@ class Carousal extends Component {
     images: ["http://pets-images.dev-apis.com/pets/none.jpg"],
   };
 
-  handleIndexClick = (event) => {
+  public handleIndexClick = (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (!target.dataset.index) return;
     this.setState({
-      active: +event.target.dataset.index,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      active: +target?.dataset?.index,
     });
   };
 
@@ -27,7 +34,7 @@ class Carousal extends Component {
         <div className="carousel-smaller">
           {images.map((photo, index) => (
             <img
-              onClick={this.handleIndexClick}
+              onClick={() => this.handleIndexClick}
               key={photo}
               src={photo}
               data-index={index}

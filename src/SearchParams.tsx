@@ -1,20 +1,21 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, FunctionComponent } from "react";
+import { Pet, PetAPIResponse, Animal } from "./APIResponsesTypes";
 import Results from "./Results";
 import ThemeContext from "./ThemeContext";
 import useBreedList from "./useBreedList";
 
-const ANIMALS = ["birds", "cat", "dog", "rabbit", "reptile"];
+const ANIMALS: Animal[] = ["bird", "cat", "dog", "rabbit", "reptile"];
 
-const SearchParams = () => {
+const SearchParams: FunctionComponent = () => {
   const [location, setLocation] = useState("");
-  const [animal, setAnimal] = useState("");
+  const [animal, setAnimal] = useState("" as Animal);
   const [breed, setBreed] = useState("");
   const [breeds] = useBreedList(animal);
-  const [pets, setPets] = useState([]);
+  const [pets, setPets] = useState([] as Pet[]);
   const [theme, setTheme] = useContext(ThemeContext);
 
   useEffect(() => {
-    requestPets();
+    void requestPets();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -22,7 +23,7 @@ const SearchParams = () => {
     const res = await fetch(
       `https://pets-v2.dev-apis.com/pets?animal=${animal}&location=${location}&breed=${breed}`
     );
-    const json = await res.json();
+    const json = (await res.json()) as PetAPIResponse;
     setPets(json.pets);
   }
 
@@ -31,7 +32,7 @@ const SearchParams = () => {
       <form
         onSubmit={(evt) => {
           evt.preventDefault();
-          requestPets();
+          void requestPets();
         }}
       >
         <label htmlFor="location">
@@ -49,11 +50,11 @@ const SearchParams = () => {
             id="animal"
             value={animal}
             onChange={(evt) => {
-              setAnimal(evt.target.value);
+              setAnimal(evt.target.value as Animal);
               setBreed("");
             }}
             onBlur={(evt) => {
-              setAnimal(evt.target.value);
+              setAnimal(evt.target.value as Animal);
               setBreed("");
             }}
           >
@@ -79,7 +80,7 @@ const SearchParams = () => {
             }}
           >
             <option />
-            {breeds.map((allBreed) => (
+            {breeds.map((allBreed: string) => (
               <option key={allBreed} value={allBreed}>
                 {allBreed}
               </option>
